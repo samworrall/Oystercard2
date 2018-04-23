@@ -42,6 +42,10 @@ describe Oystercard do
       it 'should respond to #touch_in' do
         expect(subject).to respond_to(:touch_in)
       end
+
+      # it 'should change the state of #in_journey?' do
+      #   expect(subject)
+      # end
     end
 
     describe '#touch_out method' do
@@ -53,6 +57,10 @@ describe Oystercard do
     describe '#in_journey?' do
       it 'should respond to #in_journey?' do
         expect(subject).to respond_to(:in_journey?)
+      end
+
+      it 'returns a boolean value' do
+        expect(subject).not_to be_in_journey
       end
     end
   end

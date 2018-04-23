@@ -26,7 +26,7 @@ class Oystercard
   end
 
   def in_journey?
-
+    en_route
   end
 
 end
