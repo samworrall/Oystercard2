@@ -1,15 +1,11 @@
 require 'oystercard'
 
 describe Oystercard do
-  it 'responds to the method #balance' do
-    expect(subject).to respond_to(:balance)
+  it 'should have 0 #balance on instantiation' do
+    expect(subject.balance).to eq 0
   end
 
   describe '#top_up' do
-    it 'responds to the method #top_up with 1 argument' do
-      expect(subject).to respond_to(:top_up).with(1).argument
-    end
-
     it 'adds money to the balance of the card' do
       subject.top_up(5)
       expect(subject.balance).to eq 5
@@ -27,10 +23,6 @@ describe Oystercard do
   end
 
   describe '#deduct method' do
-    it 'should respond to #deduct' do
-      expect(subject).to respond_to(:deduct).with(1).argument
-    end
-
     it 'should reduce #balance by value' do
       subject.deduct(10)
       expect(subject.balance).to eq -10
@@ -40,4 +32,20 @@ describe Oystercard do
       expect { subject.deduct(-10) }.to raise_error "Invalid amount"
     end
   end
+
+  context 'card usage during the journey' do
+    describe '#touch_in method' do
+      it 'should respond to #touch_in' do
+        expect(subject).to respond_to(:touch_in)
+      end
+
+      it 'should remember the station where it touched in'
+    end
+
+    describe '#touch_out method'
+
+    describe '#in_journey?'
+  end
+
+
 end

@@ -14,6 +14,9 @@ class Oystercard
   def deduct(value)
     raise "Invalid amount" if value < 0
     @balance -= value
+  end
+
+  def touch_in
 
   end
 
