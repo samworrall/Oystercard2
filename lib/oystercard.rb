@@ -1,9 +1,10 @@
 class Oystercard
-  attr_reader :balance
+  attr_reader :balance, :en_route
   LIMIT = 90
 
   def initialize
     @balance = 0
+    @en_route = false
   end
 
   def top_up(value)
@@ -17,6 +18,14 @@ class Oystercard
   end
 
   def touch_in
+
+  end
+
+  def touch_out
+
+  end
+
+  def in_journey?
 
   end
 

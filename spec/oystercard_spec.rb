@@ -5,6 +5,10 @@ describe Oystercard do
     expect(subject.balance).to eq 0
   end
 
+  it 'should return false' do
+    expect(subject.en_route).to eq false
+  end
+
   describe '#top_up' do
     it 'adds money to the balance of the card' do
       subject.top_up(5)
@@ -38,13 +42,19 @@ describe Oystercard do
       it 'should respond to #touch_in' do
         expect(subject).to respond_to(:touch_in)
       end
-
-      it 'should remember the station where it touched in'
     end
 
-    describe '#touch_out method'
+    describe '#touch_out method' do
+      it 'should respond to #touch_out' do
+        expect(subject).to respond_to(:touch_out)
+      end
+    end
 
-    describe '#in_journey?'
+    describe '#in_journey?' do
+      it 'should respond to #in_journey?' do
+        expect(subject).to respond_to(:in_journey?)
+      end
+    end
   end
 
 
