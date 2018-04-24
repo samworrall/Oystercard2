@@ -1,6 +1,7 @@
 class Oystercard
   attr_reader :balance, :en_route
   LIMIT = 90
+  MINIMUM_FARE = 1
 
   def initialize
     @balance = 0
@@ -12,22 +13,25 @@ class Oystercard
     @balance += value
   end
 
-  def deduct(value)
-    raise "Invalid amount" if value < 0
-    @balance -= value
-  end
-
   def touch_in
-    fail "Insufficient funds" if @balance < 1
+    fail "Insufficient funds" if @balance < MINIMUM_FARE
     @en_route = true
   end
 
   def touch_out
+    deduct(MINIMUM_FARE)
     @en_route = false
   end
 
   def in_journey?
     @en_route
+  end
+
+  private
+
+  def deduct(value)
+    raise "Invalid amount" if value < 0
+    @balance -= value
   end
 
 end
