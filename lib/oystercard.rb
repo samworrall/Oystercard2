@@ -18,6 +18,7 @@ class Oystercard
   end
 
   def touch_in
+    fail "Insufficient funds" if @balance < 1
     @en_route = true
   end
 

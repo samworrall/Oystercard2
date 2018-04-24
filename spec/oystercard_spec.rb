@@ -43,8 +43,15 @@ describe Oystercard do
     end
 
     it 'changes en_route to true' do
+      subject.top_up(1)
       subject.touch_in
       expect(subject.en_route).to eq true
+    end
+
+    context 'when balance is less than minimum fare' do
+      it 'raises error' do
+        expect { subject.touch_in }.to raise_error "Insufficient funds"
+      end
     end
   end
 
@@ -54,6 +61,7 @@ describe Oystercard do
     end
 
     it 'changes en_route to false' do
+      subject.top_up(1)
       subject.touch_in
       expect(subject.touch_out).to eq false
     end
@@ -69,6 +77,7 @@ describe Oystercard do
     end
 
     it 'should be true after touch_in' do
+      subject.top_up(1)
       subject.touch_in
       expect(subject).to be_in_journey
     end
