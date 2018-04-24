@@ -69,10 +69,14 @@ describe Oystercard do
     end
 
     describe '#journeys', :journeys do
+
+      it 'returns an empty journeys array' do
+        expect(subject.journeys).to be_empty
+      end
       it 'returns a hash of entry and exit stations' do
         subject.touch_in(station)
         subject.touch_out(exit_station)
-        expect(subject.journeys[station]).to eq exit_station
+        expect(subject.journeys.first[station]).to eq exit_station
       end
     end
   end
