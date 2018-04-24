@@ -38,14 +38,16 @@ describe Oystercard do
   end
 
   context 'card usage during the journey' do
-    describe '#touch_in method' do
+    describe '#touch_in method', :touch_in do
       it 'should respond to #touch_in' do
         expect(subject).to respond_to(:touch_in)
       end
 
-      # it 'should change the state of #in_journey?' do
-      #   expect(subject)
-      # end
+      it 'changes en_route to true' do
+        subject.touch_in
+        expect(subject.en_route).to eq true
+      end
+
     end
 
     describe '#touch_out method' do

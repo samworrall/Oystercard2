@@ -18,7 +18,7 @@ class Oystercard
   end
 
   def touch_in
-
+    @en_route = true
   end
 
   def touch_out
@@ -26,7 +26,7 @@ class Oystercard
   end
 
   def in_journey?
-    en_route
+    @en_route
   end
 
 end
