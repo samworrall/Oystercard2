@@ -37,6 +37,7 @@ describe Oystercard do
       expect(subject.en_route).to eq true
     end
 
+
     context 'when balance is less than minimum fare' do
       it 'raises error' do
         expect { subject.touch_in }.to raise_error "Insufficient funds"
@@ -78,4 +79,12 @@ describe Oystercard do
     end
   end
 
+  describe '#entry_station', :entry do
+    it 'returns entry_station' do
+      station = 'Padington'
+      subject.top_up(Oystercard::MINIMUM_FARE)
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq station
+    end
+  end
 end
