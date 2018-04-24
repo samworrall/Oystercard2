@@ -1,12 +1,9 @@
 require 'oystercard'
 
 describe Oystercard do
+  let(:station) { double :station }
   it 'should have 0 #balance on instantiation' do
     expect(subject.balance).to eq 0
-  end
-
-  it 'should return false' do
-    expect(subject.en_route).to eq false
   end
 
   describe '#top_up', :top_up do
@@ -27,46 +24,30 @@ describe Oystercard do
   end
 
   describe '#touch_in method', :touch_in do
-    it 'should respond to #touch_in' do
-      expect(subject).to respond_to(:touch_in)
-    end
-
-    it 'changes en_route to true' do
-      subject.top_up(Oystercard::MINIMUM_FARE)
-      subject.touch_in
-      expect(subject.en_route).to eq true
-    end
-
 
     context 'when balance is less than minimum fare' do
       it 'raises error' do
-        expect { subject.touch_in }.to raise_error "Insufficient funds"
+        expect { subject.touch_in(station) }.to raise_error "Insufficient funds"
       end
     end
   end
 
   describe '#touch_out method', :touch_out do
-    it 'should respond to #touch_out' do
-      expect(subject).to respond_to(:touch_out)
-    end
-
-    it 'changes en_route to false' do
-      subject.top_up(Oystercard::MINIMUM_FARE)
-      subject.touch_in
-      expect(subject.touch_out).to eq false
-    end
 
     it 'deducts fare from balance' do
       subject.top_up(10)
-      subject.touch_in
+      subject.touch_in(station)
       expect { subject.touch_out }.to change { subject.balance }.from(10).to(9)
+    end
+
+    it 'forgets entry station on touch out' do
+      subject.top_up(Oystercard::MINIMUM_FARE)
+      subject.touch_in(station)
+      expect { subject.touch_out }.to change { subject.entry_station }.from(station).to(nil)
     end
   end
 
   describe '#in_journey?', :in_journey do
-    it 'should respond to #in_journey?' do
-      expect(subject).to respond_to(:in_journey?)
-    end
 
     it 'returns a boolean value' do
       expect(subject).not_to be_in_journey
@@ -74,14 +55,13 @@ describe Oystercard do
 
     it 'should be true after touch_in' do
       subject.top_up(Oystercard::MINIMUM_FARE)
-      subject.touch_in
+      subject.touch_in(station)
       expect(subject).to be_in_journey
     end
   end
 
   describe '#entry_station', :entry do
     it 'returns entry_station' do
-      station = 'Padington'
       subject.top_up(Oystercard::MINIMUM_FARE)
       subject.touch_in(station)
       expect(subject.entry_station).to eq station
