@@ -33,48 +33,48 @@ describe Oystercard do
     end
   end
 
-  describe '#touch_out method', :touch_out do
+  context 'start journey with minimum fare' do
+    before { subject.top_up(Oystercard::MINIMUM_FARE) }
 
-    it 'deducts fare from balance' do
-      subject.top_up(10)
-      subject.touch_in(station)
-      expect { subject.touch_out(exit_station) }.to change { subject.balance }.from(10).to(9)
+    describe '#touch_out method', :touch_out do
+      it 'deducts fare from balance' do
+        subject.touch_in(station)
+        expect { subject.touch_out(exit_station)
+        }.to change { subject.balance }.from(Oystercard::MINIMUM_FARE).to(0)
+      end
+
+      it 'forgets entry station on touch out' do
+        subject.touch_in(station)
+        expect { subject.touch_out(exit_station)
+        }.to change { subject.entry_station }.from(station).to(nil)
+      end
     end
 
-    it 'forgets entry station on touch out' do
-      subject.top_up(Oystercard::MINIMUM_FARE)
-      subject.touch_in(station)
-      expect { subject.touch_out(exit_station) }.to change { subject.entry_station }.from(station).to(nil)
+    describe '#in_journey?', :in_journey do
+      it 'returns a boolean value' do
+        expect(subject).not_to be_in_journey
+      end
+
+      it 'should be true after touch_in' do
+        subject.touch_in(station)
+        expect(subject).to be_in_journey
+      end
+    end
+
+    describe '#entry_station', :entry do
+      it 'returns entry_station' do
+        subject.touch_in(station)
+        expect(subject.entry_station).to eq station
+      end
+    end
+
+    describe '#journeys', :journeys do
+      it 'returns a hash of entry and exit stations' do
+        subject.touch_in(station)
+        subject.touch_out(exit_station)
+        expect(subject.journeys[station]).to eq exit_station
+      end
     end
   end
 
-  describe '#in_journey?', :in_journey do
-
-    it 'returns a boolean value' do
-      expect(subject).not_to be_in_journey
-    end
-
-    it 'should be true after touch_in' do
-      subject.top_up(Oystercard::MINIMUM_FARE)
-      subject.touch_in(station)
-      expect(subject).to be_in_journey
-    end
-  end
-
-  describe '#entry_station', :entry do
-    it 'returns entry_station' do
-      subject.top_up(Oystercard::MINIMUM_FARE)
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq station
-    end
-  end
-
-  describe '#journeys', :journeys do
-    it 'returns a hash of entry and exit stations' do
-      subject.top_up(Oystercard::MINIMUM_FARE)
-      subject.touch_in(station)
-      subject.touch_out(exit_station)
-      expect(subject.journeys[station]).to eq exit_station
-    end
-  end
 end
